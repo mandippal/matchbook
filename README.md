@@ -7,6 +7,6 @@ from the on-chain program for use by other workspace members.
 
 ## Crates
 
-- [`matchbook_program`]: On-chain Solana program
+- `matchbook_program`: On-chain Solana program
 
 License: MIT
