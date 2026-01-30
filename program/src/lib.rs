@@ -20,7 +20,11 @@ use anchor_lang::prelude::*;
 
 pub mod state;
 
-pub use state::{Market, MarketStatus, MARKET_SEED};
+pub use state::{
+    critbit, get_bit, AnyNode, FreeNode, InnerNode, LeafNode, Market, MarketStatus, NodeTag,
+    OrderBookSideHeader, OrderId, TimeInForce, ASKS_SEED, BIDS_SEED, MARKET_SEED, NODE_SIZE,
+    ORDERBOOK_HEADER_SIZE, SENTINEL,
+};
 
 declare_id!("MATCHBooK1111111111111111111111111111111111");
 
