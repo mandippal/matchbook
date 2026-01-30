@@ -34,3 +34,6 @@ indexing_slicing = "warn"
 needless_collect = "warn"
 unnecessary_to_owned = "warn"
 clone_on_ref_ptr = "warn"
+
+[profile.release]
+overflow-checks = true
