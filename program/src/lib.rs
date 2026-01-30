@@ -18,6 +18,10 @@
 
 use anchor_lang::prelude::*;
 
+pub mod state;
+
+pub use state::{Market, MarketStatus, MARKET_SEED};
+
 declare_id!("MATCHBooK1111111111111111111111111111111111");
 
 /// Matchbook program module.
