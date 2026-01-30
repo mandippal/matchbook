@@ -1,6 +1,6 @@
 # Matchbook
 
-[![Dual License](https://img.shields.io/badge/license-MIT%20and%20Apache%202.0-blue)](./LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 [![Crates.io](https://img.shields.io/crates/v/matchbook.svg)](https://crates.io/crates/matchbook)
 [![Downloads](https://img.shields.io/crates/d/matchbook.svg)](https://crates.io/crates/matchbook)
 [![Stars](https://img.shields.io/github/stars/joaquinbejar/matchbook.svg)](https://github.com/joaquinbejar/matchbook/stargazers)
@@ -29,37 +29,42 @@ This is not a toy project. It's a technical reference for building institutional
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              CLIENTS                                         │
-│         Traders  │  Market Makers  │  Bots  │  DeFi Protocols               │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           OFF-CHAIN LAYER                                    │
-│    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                   │
-│    │   REST API  │    │  WebSocket  │    │    Crank    │                   │
-│    │  (queries)  │    │  (streams)  │    │  (matching) │                   │
-│    └─────────────┘    └─────────────┘    └─────────────┘                   │
-│                              │                                              │
-│                     ┌────────┴────────┐                                     │
-│                     │     Indexer     │                                     │
-│                     │  (Geyser/gRPC)  │                                     │
-│                     └─────────────────┘                                     │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           ON-CHAIN LAYER                                     │
-│    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                   │
-│    │   Market    │    │  Order Book │    │   Event     │                   │
-│    │   Config    │    │  (Bids/Asks)│    │   Queue     │                   │
-│    └─────────────┘    └─────────────┘    └─────────────┘                   │
-│    ┌─────────────┐    ┌─────────────┐                                      │
-│    │ Base Vault  │    │ Quote Vault │    Solana Program (BPF)              │
-│    └─────────────┘    └─────────────┘                                      │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph CLIENTS["CLIENTS"]
+        direction LR
+        C1["Traders"]
+        C2["Market Makers"]
+        C3["Bots"]
+        C4["DeFi Protocols"]
+    end
+
+    subgraph OFFCHAIN["OFF-CHAIN LAYER"]
+        direction TB
+
+        REST["REST API\n(queries)"]
+        WS["WebSocket\n(streams)"]
+        CRANK["Crank Service\n(matching)"]
+
+        INDEXER["Indexer\n(Geyser/gRPC)"]
+
+        REST --- INDEXER
+        WS --- INDEXER
+        CRANK --- INDEXER
+    end
+
+    subgraph ONCHAIN["ON-CHAIN LAYER · Solana Program (BPF)"]
+        direction TB
+
+        MARKET["Market Config"]
+        ORDERBOOK["Order Book\n(Bids/Asks)"]
+        EVENTS["Event Queue"]
+        BASE["Base Vault"]
+        QUOTE["Quote Vault"]
+    end
+
+    CLIENTS --> OFFCHAIN
+    OFFCHAIN --> ONCHAIN
 ```
 
 ## Key Features
@@ -320,4 +325,4 @@ We appreciate your interest and look forward to your contributions!
 
 ## License
 
-This project is dual-licensed under MIT and Apache 2.0. See [LICENSE-MIT](./LICENSE-MIT) and [LICENSE-APACHE](./LICENSE-APACHE) for details.
+This project is licensed under MIT. See [LICENSE-MIT](./LICENSE-MIT) for details.
