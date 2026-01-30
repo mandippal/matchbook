@@ -18,8 +18,8 @@ resolver = "2"
 [dependencies]
 
 [workspace.dependencies]
-anchor-lang = "0.32"
-anchor-spl = "0.32"
+anchor-lang = "1.0.0-rc.2"
+anchor-spl = "1.0.0-rc.2"
 solana-program = "3.0"
 
 [workspace.lints.rust]
