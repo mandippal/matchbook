@@ -32,7 +32,7 @@ This is not a toy project. It's a technical reference for building institutional
 ```mermaid
 flowchart TB
     subgraph CLIENTS["CLIENTS"]
-        direction LR
+        direction TB
         C1["Traders"]
         C2["Market Makers"]
         C3["Bots"]
@@ -42,22 +42,22 @@ flowchart TB
     subgraph OFFCHAIN["OFF-CHAIN LAYER"]
         direction TB
 
-        REST["REST API\n(queries)"]
-        WS["WebSocket\n(streams)"]
-        CRANK["Crank Service\n(matching)"]
+        REST["REST API<br/>(queries)"]
+        WS["WebSocket<br/>(streams)"]
+        CRANK["Crank Service<br/>(matching)"]
 
-        INDEXER["Indexer\n(Geyser/gRPC)"]
+        INDEXER["Indexer<br/>(Geyser/gRPC)"]
 
         REST --- INDEXER
         WS --- INDEXER
         CRANK --- INDEXER
     end
 
-    subgraph ONCHAIN["ON-CHAIN LAYER · Solana Program (BPF)"]
+    subgraph ONCHAIN["ON-CHAIN LAYER · Solana Program BPF"]
         direction TB
 
         MARKET["Market Config"]
-        ORDERBOOK["Order Book\n(Bids/Asks)"]
+        ORDERBOOK["Order Book<br/>(Bids/Asks)"]
         EVENTS["Event Queue"]
         BASE["Base Vault"]
         QUOTE["Quote Vault"]
