@@ -25,9 +25,9 @@ pub mod state;
 
 pub use error::{ErrorCategory, MatchbookError};
 pub use instructions::{
-    CreateMarketParams, CreateOpenOrdersParams, DepositParams, WithdrawParams, BASE_VAULT_SEED,
-    EVENT_QUEUE_ACCOUNT_SIZE, MAX_FEE_BPS, MAX_MAKER_FEE_BPS, MAX_MAKER_REBATE_BPS,
-    ORDERBOOK_ACCOUNT_SIZE, QUOTE_VAULT_SEED,
+    CancelOrderParams, CreateMarketParams, CreateOpenOrdersParams, DepositParams, WithdrawParams,
+    BASE_VAULT_SEED, EVENT_QUEUE_ACCOUNT_SIZE, MAX_FEE_BPS, MAX_MAKER_FEE_BPS,
+    MAX_MAKER_REBATE_BPS, ORDERBOOK_ACCOUNT_SIZE, QUOTE_VAULT_SEED,
 };
 
 pub use state::{
@@ -125,6 +125,27 @@ pub mod matchbook {
     /// - Insufficient free balance
     pub fn withdraw(ctx: Context<Withdraw>, params: WithdrawParams) -> Result<()> {
         instructions::withdraw::handler(ctx, params)
+    }
+
+    /// Cancels an order from the order book.
+    ///
+    /// Removes the order, releases locked funds back to free balance,
+    /// and emits an Out event for off-chain tracking.
+    /// Both owner and delegate can cancel orders.
+    ///
+    /// # Arguments
+    ///
+    /// * `ctx` - The instruction context
+    /// * `params` - Cancel parameters (order_id, side)
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if:
+    /// - Market is closed
+    /// - Authority is not authorized
+    /// - Order not found
+    pub fn cancel_order(ctx: Context<CancelOrder>, params: CancelOrderParams) -> Result<()> {
+        instructions::cancel_order::handler(ctx, params)
     }
 }
 
@@ -358,6 +379,49 @@ pub struct Withdraw<'info> {
 
     /// SPL Token program.
     pub token_program: Program<'info, Token>,
+}
+
+/// Accounts for the CancelOrder instruction.
+///
+/// Note: Cancellation is allowed even if market is paused (CancelOnly mode).
+/// Cancellation is NOT allowed if market is closed.
+#[derive(Accounts)]
+#[instruction(params: CancelOrderParams)]
+pub struct CancelOrder<'info> {
+    /// Authority cancelling the order (owner or delegate).
+    pub authority: Signer<'info>,
+
+    /// Market the order is on.
+    #[account(
+        has_one = bids @ MatchbookError::InvalidAccountData,
+        has_one = asks @ MatchbookError::InvalidAccountData,
+        has_one = event_queue @ MatchbookError::InvalidAccountData
+    )]
+    pub market: Account<'info, Market>,
+
+    /// User's OpenOrders account.
+    #[account(
+        mut,
+        seeds = [OPEN_ORDERS_SEED, market.key().as_ref(), open_orders.owner.as_ref()],
+        bump = open_orders.bump,
+        constraint = open_orders.is_authorized(authority.key) @ MatchbookError::Unauthorized
+    )]
+    pub open_orders: Account<'info, OpenOrders>,
+
+    /// Bids order book account.
+    /// CHECK: Validated via has_one on market.
+    #[account(mut)]
+    pub bids: UncheckedAccount<'info>,
+
+    /// Asks order book account.
+    /// CHECK: Validated via has_one on market.
+    #[account(mut)]
+    pub asks: UncheckedAccount<'info>,
+
+    /// Event queue account.
+    /// CHECK: Validated via has_one on market.
+    #[account(mut)]
+    pub event_queue: UncheckedAccount<'info>,
 }
 
 #[cfg(test)]
