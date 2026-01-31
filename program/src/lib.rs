@@ -25,7 +25,7 @@ pub mod state;
 
 pub use error::{ErrorCategory, MatchbookError};
 pub use instructions::{
-    CreateMarketParams, CreateOpenOrdersParams, DepositParams, BASE_VAULT_SEED,
+    CreateMarketParams, CreateOpenOrdersParams, DepositParams, WithdrawParams, BASE_VAULT_SEED,
     EVENT_QUEUE_ACCOUNT_SIZE, MAX_FEE_BPS, MAX_MAKER_FEE_BPS, MAX_MAKER_REBATE_BPS,
     ORDERBOOK_ACCOUNT_SIZE, QUOTE_VAULT_SEED,
 };
@@ -105,6 +105,26 @@ pub mod matchbook {
     /// - Balance overflow would occur
     pub fn deposit(ctx: Context<Deposit>, params: DepositParams) -> Result<()> {
         instructions::deposit::handler(ctx, params)
+    }
+
+    /// Withdraws tokens from market vaults to user's wallet.
+    ///
+    /// Transfers base and/or quote tokens from the market vaults
+    /// to the user's token accounts, debiting the user's OpenOrders account.
+    /// Only the owner can withdraw (delegate cannot).
+    ///
+    /// # Arguments
+    ///
+    /// * `ctx` - The instruction context
+    /// * `params` - Withdraw amounts for base and quote tokens
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if:
+    /// - Both amounts are zero
+    /// - Insufficient free balance
+    pub fn withdraw(ctx: Context<Withdraw>, params: WithdrawParams) -> Result<()> {
+        instructions::withdraw::handler(ctx, params)
     }
 }
 
@@ -243,6 +263,60 @@ pub struct Deposit<'info> {
     #[account(
         constraint = market.is_active() @ MatchbookError::MarketNotActive
     )]
+    pub market: Account<'info, Market>,
+
+    /// User's OpenOrders account.
+    #[account(
+        mut,
+        seeds = [OPEN_ORDERS_SEED, market.key().as_ref(), owner.key().as_ref()],
+        bump = open_orders.bump,
+        has_one = owner @ MatchbookError::Unauthorized
+    )]
+    pub open_orders: Account<'info, OpenOrders>,
+
+    /// User's base token account.
+    #[account(
+        mut,
+        constraint = user_base_account.mint == market.base_mint @ MatchbookError::InvalidAccountData
+    )]
+    pub user_base_account: Account<'info, TokenAccount>,
+
+    /// User's quote token account.
+    #[account(
+        mut,
+        constraint = user_quote_account.mint == market.quote_mint @ MatchbookError::InvalidAccountData
+    )]
+    pub user_quote_account: Account<'info, TokenAccount>,
+
+    /// Market's base token vault.
+    #[account(
+        mut,
+        address = market.base_vault @ MatchbookError::InvalidAccountData
+    )]
+    pub base_vault: Account<'info, TokenAccount>,
+
+    /// Market's quote token vault.
+    #[account(
+        mut,
+        address = market.quote_vault @ MatchbookError::InvalidAccountData
+    )]
+    pub quote_vault: Account<'info, TokenAccount>,
+
+    /// SPL Token program.
+    pub token_program: Program<'info, Token>,
+}
+
+/// Accounts for the Withdraw instruction.
+///
+/// Note: Withdrawal is allowed even if market is paused/closed.
+/// Only the owner can withdraw (delegate cannot).
+#[derive(Accounts)]
+#[instruction(params: WithdrawParams)]
+pub struct Withdraw<'info> {
+    /// Owner of the OpenOrders account (must sign). Delegate cannot withdraw.
+    pub owner: Signer<'info>,
+
+    /// Market to withdraw from. Withdrawal allowed even if paused/closed.
     pub market: Account<'info, Market>,
 
     /// User's OpenOrders account.
