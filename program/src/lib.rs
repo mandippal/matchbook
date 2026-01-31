@@ -22,9 +22,10 @@ pub mod state;
 
 pub use state::{
     critbit, get_bit, AnyNode, Event, EventQueueHeader, FillEvent, FreeNode, InnerNode, LeafNode,
-    Market, MarketStatus, NodeTag, OrderBookSideHeader, OrderId, OutEvent, OutReason, Side,
-    TimeInForce, ASKS_SEED, BIDS_SEED, EVENT_QUEUE_HEADER_SIZE, EVENT_QUEUE_SEED, MARKET_SEED,
-    NODE_SIZE, ORDERBOOK_HEADER_SIZE, SENTINEL,
+    Market, MarketStatus, NodeTag, OpenOrders, OrderBookSideHeader, OrderId, OrderSlot, OutEvent,
+    OutReason, Side, TimeInForce, ASKS_SEED, BIDS_SEED, EMPTY_ORDER_ID, EVENT_QUEUE_HEADER_SIZE,
+    EVENT_QUEUE_SEED, MARKET_SEED, MAX_ORDERS, NODE_SIZE, OPEN_ORDERS_SEED, ORDERBOOK_HEADER_SIZE,
+    SENTINEL,
 };
 
 declare_id!("MATCHBooK1111111111111111111111111111111111");

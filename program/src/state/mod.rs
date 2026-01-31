@@ -10,9 +10,12 @@
 //! - [`TimeInForce`] - Order time-in-force options
 //! - [`EventQueueHeader`] - Event queue header (ring buffer)
 //! - [`Event`], [`FillEvent`], [`OutEvent`] - Event types
+//! - [`OpenOrders`] - Per-user order and balance tracking
+//! - [`OrderSlot`] - Individual order slot in OpenOrders
 
 mod event_queue;
 mod market;
+mod open_orders;
 mod orderbook;
 
 pub use event_queue::{
@@ -20,6 +23,7 @@ pub use event_queue::{
     EVENT_QUEUE_SEED,
 };
 pub use market::{Market, MarketStatus, MARKET_SEED};
+pub use open_orders::{OpenOrders, OrderSlot, EMPTY_ORDER_ID, MAX_ORDERS, OPEN_ORDERS_SEED};
 pub use orderbook::{
     critbit, get_bit, AnyNode, FreeNode, InnerNode, LeafNode, NodeTag, OrderBookSideHeader,
     OrderId, TimeInForce, ASKS_SEED, BIDS_SEED, NODE_SIZE, ORDERBOOK_HEADER_SIZE, SENTINEL,
