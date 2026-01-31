@@ -8,10 +8,12 @@
 //! - [`create_market`] - Creates a new trading market
 //! - [`create_open_orders`] - Creates a user's trading account for a market
 //! - [`deposit`] - Deposits tokens into a user's OpenOrders account
+//! - [`withdraw`] - Withdraws tokens from a user's OpenOrders account
 
 pub mod create_market;
 pub mod create_open_orders;
 pub mod deposit;
+pub mod withdraw;
 
 pub use create_market::{
     CreateMarketParams, BASE_VAULT_SEED, EVENT_QUEUE_ACCOUNT_SIZE, MAX_FEE_BPS, MAX_MAKER_FEE_BPS,
@@ -19,3 +21,4 @@ pub use create_market::{
 };
 pub use create_open_orders::CreateOpenOrdersParams;
 pub use deposit::DepositParams;
+pub use withdraw::WithdrawParams;
