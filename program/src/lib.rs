@@ -25,8 +25,9 @@ pub mod state;
 
 pub use error::{ErrorCategory, MatchbookError};
 pub use instructions::{
-    CreateMarketParams, CreateOpenOrdersParams, BASE_VAULT_SEED, EVENT_QUEUE_ACCOUNT_SIZE,
-    MAX_FEE_BPS, MAX_MAKER_FEE_BPS, MAX_MAKER_REBATE_BPS, ORDERBOOK_ACCOUNT_SIZE, QUOTE_VAULT_SEED,
+    CreateMarketParams, CreateOpenOrdersParams, DepositParams, BASE_VAULT_SEED,
+    EVENT_QUEUE_ACCOUNT_SIZE, MAX_FEE_BPS, MAX_MAKER_FEE_BPS, MAX_MAKER_REBATE_BPS,
+    ORDERBOOK_ACCOUNT_SIZE, QUOTE_VAULT_SEED,
 };
 
 pub use state::{
@@ -84,6 +85,26 @@ pub mod matchbook {
         params: CreateOpenOrdersParams,
     ) -> Result<()> {
         instructions::create_open_orders::handler(ctx, params)
+    }
+
+    /// Deposits tokens from user's wallet to market vaults.
+    ///
+    /// Transfers base and/or quote tokens from the user's token accounts
+    /// to the market vaults, crediting the user's OpenOrders account.
+    ///
+    /// # Arguments
+    ///
+    /// * `ctx` - The instruction context
+    /// * `params` - Deposit amounts for base and quote tokens
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if:
+    /// - Both amounts are zero
+    /// - Market is not active
+    /// - Balance overflow would occur
+    pub fn deposit(ctx: Context<Deposit>, params: DepositParams) -> Result<()> {
+        instructions::deposit::handler(ctx, params)
     }
 }
 
@@ -209,6 +230,60 @@ pub struct CreateOpenOrders<'info> {
 
     /// System program for account creation.
     pub system_program: Program<'info, System>,
+}
+
+/// Accounts for the Deposit instruction.
+#[derive(Accounts)]
+#[instruction(params: DepositParams)]
+pub struct Deposit<'info> {
+    /// Owner of the OpenOrders account (must sign).
+    pub owner: Signer<'info>,
+
+    /// Market to deposit into.
+    #[account(
+        constraint = market.is_active() @ MatchbookError::MarketNotActive
+    )]
+    pub market: Account<'info, Market>,
+
+    /// User's OpenOrders account.
+    #[account(
+        mut,
+        seeds = [OPEN_ORDERS_SEED, market.key().as_ref(), owner.key().as_ref()],
+        bump = open_orders.bump,
+        has_one = owner @ MatchbookError::Unauthorized
+    )]
+    pub open_orders: Account<'info, OpenOrders>,
+
+    /// User's base token account.
+    #[account(
+        mut,
+        constraint = user_base_account.mint == market.base_mint @ MatchbookError::InvalidAccountData
+    )]
+    pub user_base_account: Account<'info, TokenAccount>,
+
+    /// User's quote token account.
+    #[account(
+        mut,
+        constraint = user_quote_account.mint == market.quote_mint @ MatchbookError::InvalidAccountData
+    )]
+    pub user_quote_account: Account<'info, TokenAccount>,
+
+    /// Market's base token vault.
+    #[account(
+        mut,
+        address = market.base_vault @ MatchbookError::InvalidAccountData
+    )]
+    pub base_vault: Account<'info, TokenAccount>,
+
+    /// Market's quote token vault.
+    #[account(
+        mut,
+        address = market.quote_vault @ MatchbookError::InvalidAccountData
+    )]
+    pub quote_vault: Account<'info, TokenAccount>,
+
+    /// SPL Token program.
+    pub token_program: Program<'info, Token>,
 }
 
 #[cfg(test)]
