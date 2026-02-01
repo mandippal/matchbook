@@ -1,0 +1,49 @@
+[package]
+name = "matchbook-api"
+version = "0.1.0"
+edition = "2021"
+authors = ["Matchbook Team"]
+description = "REST API server for Matchbook CLOB"
+license = "MIT"
+repository = "https://github.com/joaquinbejar/matchbook"
+
+[dependencies]
+# Web framework
+axum = { version = "0.7", features = ["macros"] }
+tower = { version = "0.4", features = ["limit", "buffer"] }
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+
+# Async runtime
+tokio = { version = "1.43", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# Error handling
+thiserror = "2.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+
+# Solana types
+bs58 = "0.5"
+
+# Internal dependencies
+matchbook-indexer = { path = "../indexer" }
+
+[dev-dependencies]
+# Testing
+tokio-test = "0.4"
+axum-test = "15.0"
+
+[features]
+default = []
+
+[lib]
+name = "matchbook_api"
+path = "src/lib.rs"
