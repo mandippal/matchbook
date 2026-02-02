@@ -38,7 +38,7 @@ import {
  * @example
  * ```typescript
  * const client = new MatchbookClient({
- *   baseUrl: 'https://api.matchbook.io/v1',
+ *   baseUrl: 'https://api.matchbook.taunais.com/v1',
  *   apiKey: 'your-api-key',
  * });
  *

@@ -43,7 +43,7 @@ interface Subscription {
  * @example
  * ```typescript
  * const ws = new MatchbookWsClient({
- *   wsUrl: 'wss://ws.matchbook.io/v1/stream',
+ *   wsUrl: 'wss://ws.matchbook.taunais.com/v1/stream',
  *   apiKey: 'your-api-key',
  * });
  *

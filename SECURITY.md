@@ -14,7 +14,7 @@ We take security seriously. If you discover a security vulnerability, please rep
 
 **DO NOT** open a public GitHub issue for security vulnerabilities.
 
-Instead, please email us at: **security@matchbook.io**
+Instead, please email us at: **security@matchbook.taunais.com**
 
 Include the following information:
 - Description of the vulnerability
@@ -118,6 +118,6 @@ We offer rewards for responsibly disclosed vulnerabilities:
 
 ## Contact
 
-- Security issues: security@matchbook.io
-- General inquiries: support@matchbook.io
-- PGP key: Available at https://matchbook.io/.well-known/security.txt
+- Security issues: security@matchbook.taunais.com
+- General inquiries: support@matchbook.taunais.com
+- PGP key: Available at https://matchbook.taunais.com/.well-known/security.txt

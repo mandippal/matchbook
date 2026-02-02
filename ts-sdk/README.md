@@ -16,7 +16,7 @@ npm install @matchbook/sdk
 import { MatchbookClient } from '@matchbook/sdk';
 
 const client = new MatchbookClient({
-  baseUrl: 'https://api.matchbook.io/v1',
+  baseUrl: 'https://api.matchbook.taunais.com/v1',
   apiKey: 'your-api-key', // Optional
 });
 
@@ -45,7 +45,7 @@ const tx = await client.buildPlaceOrderTx({
 import { MatchbookWsClient } from '@matchbook/sdk';
 
 const ws = new MatchbookWsClient({
-  wsUrl: 'wss://ws.matchbook.io/v1/stream',
+  wsUrl: 'wss://ws.matchbook.taunais.com/v1/stream',
   apiKey: 'your-api-key', // Required for order updates
 });
 

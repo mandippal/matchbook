@@ -8,15 +8,15 @@ This document provides complete documentation for the Matchbook WebSocket API.
 
 | Environment | URL |
 |-------------|-----|
-| Production | `wss://ws.matchbook.io/v1/stream` |
-| Devnet | `wss://ws.devnet.matchbook.io/v1/stream` |
+| Production | `wss://ws.matchbook.taunais.com/v1/stream` |
+| Devnet | `wss://ws.devnet.matchbook.taunais.com/v1/stream` |
 
 ### Authentication (Optional)
 
 For user-specific channels (e.g., order updates):
 
 ```javascript
-const ws = new WebSocket('wss://ws.matchbook.io/v1/stream?api_key=YOUR_KEY');
+const ws = new WebSocket('wss://ws.matchbook.taunais.com/v1/stream?api_key=YOUR_KEY');
 ```
 
 ## Message Format

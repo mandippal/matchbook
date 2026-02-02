@@ -27,12 +27,12 @@ npm install @matchbook/sdk @solana/web3.js
 use matchbook_sdk::{Client, ClientConfig};
 
 // Basic configuration
-let client = Client::new("https://api.matchbook.io")?;
+let client = Client::new("https://api.matchbook.taunais.com")?;
 
 // Advanced configuration
 let client = Client::with_config(ClientConfig {
-    api_url: "https://api.matchbook.io".to_string(),
-    ws_url: Some("wss://ws.matchbook.io".to_string()),
+    api_url: "https://api.matchbook.taunais.com".to_string(),
+    ws_url: Some("wss://ws.matchbook.taunais.com".to_string()),
     api_key: Some("your-api-key".to_string()),
     timeout: Duration::from_secs(30),
     max_retries: 3,
@@ -45,12 +45,12 @@ let client = Client::with_config(ClientConfig {
 import { MatchbookClient, ClientConfig } from '@matchbook/sdk';
 
 // Basic configuration
-const client = new MatchbookClient('https://api.matchbook.io');
+const client = new MatchbookClient('https://api.matchbook.taunais.com');
 
 // Advanced configuration
 const client = new MatchbookClient({
-  apiUrl: 'https://api.matchbook.io',
-  wsUrl: 'wss://ws.matchbook.io',
+  apiUrl: 'https://api.matchbook.taunais.com',
+  wsUrl: 'wss://ws.matchbook.taunais.com',
   apiKey: 'your-api-key',
   timeout: 30000,
   maxRetries: 3,
@@ -262,7 +262,7 @@ for (const order of orders) {
 ```rust
 use matchbook_sdk::{WebSocketClient, Message};
 
-let mut ws = WebSocketClient::connect("wss://ws.matchbook.io").await?;
+let mut ws = WebSocketClient::connect("wss://ws.matchbook.taunais.com").await?;
 
 // Subscribe to channels
 ws.subscribe_book(&market_address, Some(20)).await?;
@@ -304,7 +304,7 @@ loop {
 ```typescript
 import { MatchbookWebSocket } from '@matchbook/sdk';
 
-const ws = new MatchbookWebSocket('wss://ws.matchbook.io');
+const ws = new MatchbookWebSocket('wss://ws.matchbook.taunais.com');
 
 ws.on('open', () => {
   ws.subscribeBook(marketAddress, { depth: 20 });

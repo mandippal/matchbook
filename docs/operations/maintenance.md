@@ -148,7 +148,7 @@ kubectl get certificate -n matchbook
 kubectl describe certificate matchbook-tls -n matchbook
 
 # Check expiry date
-echo | openssl s_client -connect api.matchbook.io:443 2>/dev/null | openssl x509 -noout -dates
+echo | openssl s_client -connect api.matchbook.taunais.com:443 2>/dev/null | openssl x509 -noout -dates
 ```
 
 ### Renew Certificate
@@ -165,12 +165,12 @@ Manual renewal:
 
 ```bash
 # Generate new certificate
-certbot certonly --dns-cloudflare -d api.matchbook.io
+certbot certonly --dns-cloudflare -d api.matchbook.taunais.com
 
 # Update secret
 kubectl create secret tls matchbook-tls \
-  --cert=/etc/letsencrypt/live/api.matchbook.io/fullchain.pem \
-  --key=/etc/letsencrypt/live/api.matchbook.io/privkey.pem \
+  --cert=/etc/letsencrypt/live/api.matchbook.taunais.com/fullchain.pem \
+  --key=/etc/letsencrypt/live/api.matchbook.taunais.com/privkey.pem \
   -n matchbook --dry-run=client -o yaml | kubectl apply -f -
 
 # Restart ingress controller

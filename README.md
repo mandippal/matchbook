@@ -87,7 +87,7 @@ use matchbook_sdk::{Client, PlaceOrderParams, Side, OrderType};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = Client::new("https://api.matchbook.io")?;
+    let client = Client::new("https://api.matchbook.taunais.com")?;
     
     // Get markets
     let markets = client.get_markets().await?;
@@ -112,7 +112,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```typescript
 import { MatchbookClient, Side, OrderType } from '@matchbook/sdk';
 
-const client = new MatchbookClient('https://api.matchbook.io');
+const client = new MatchbookClient('https://api.matchbook.taunais.com');
 
 // Get markets
 const markets = await client.getMarkets();
@@ -201,15 +201,28 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ## Security
 
-For security concerns, please see [SECURITY.md](SECURITY.md) or email security@matchbook.io.
+For security concerns, please see [SECURITY.md](SECURITY.md) or email security@matchbook.taunais.com.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Links
+See [GitHub Issues](https://github.com/joaquinbejar/matchbook/issues) for detailed progress.
 
-- [Documentation](https://docs.matchbook.io)
-- [API Reference](https://api.matchbook.io/docs)
-- [Discord](https://discord.gg/matchbook)
-- [Twitter](https://twitter.com/matchbook_io)
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b M[N]/issue-[NUM]-description`
+3. Follow the [Rust coding guidelines](.internalDoc/09-rust-guidelines.md)
+4. Run `make pre-push` before committing
+5. Submit a pull request
+
+## Contact
+
+- **Author**: Joaquín Béjar García
+- **Email**: jb@taunais.com
+- **Repository**: https://github.com/joaquinbejar/matchbook
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.

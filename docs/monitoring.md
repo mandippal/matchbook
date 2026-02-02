@@ -231,7 +231,7 @@ receivers:
    ```yaml
    global:
      smtp_smarthost: 'smtp.example.com:587'
-     smtp_from: 'alertmanager@matchbook.io'
+     smtp_from: 'alertmanager@matchbook.taunais.com'
      smtp_auth_username: 'user'
      smtp_auth_password: 'password'
    ```

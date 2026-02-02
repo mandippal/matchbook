@@ -11,7 +11,7 @@
  *
  * // HTTP client
  * const client = new MatchbookClient({
- *   baseUrl: 'https://api.matchbook.io/v1',
+ *   baseUrl: 'https://api.matchbook.taunais.com/v1',
  *   apiKey: 'your-api-key',
  * });
  *
@@ -19,7 +19,7 @@
  *
  * // WebSocket client
  * const ws = new MatchbookWsClient({
- *   wsUrl: 'wss://ws.matchbook.io/v1/stream',
+ *   wsUrl: 'wss://ws.matchbook.taunais.com/v1/stream',
  * });
  *
  * await ws.connect();

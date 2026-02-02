@@ -40,10 +40,10 @@ tokio = { version = "1", features = ["full"] }
 import { MatchbookClient } from '@matchbook/sdk';
 
 // For mainnet
-const client = new MatchbookClient('https://api.matchbook.io');
+const client = new MatchbookClient('https://api.matchbook.taunais.com');
 
 // For devnet
-const client = new MatchbookClient('https://api.devnet.matchbook.io');
+const client = new MatchbookClient('https://api.devnet.matchbook.taunais.com');
 ```
 
 #### Rust
@@ -52,10 +52,10 @@ const client = new MatchbookClient('https://api.devnet.matchbook.io');
 use matchbook_sdk::Client;
 
 // For mainnet
-let client = Client::new("https://api.matchbook.io")?;
+let client = Client::new("https://api.matchbook.taunais.com")?;
 
 // For devnet
-let client = Client::new("https://api.devnet.matchbook.io")?;
+let client = Client::new("https://api.devnet.matchbook.taunais.com")?;
 ```
 
 ### 2. Get Available Markets
@@ -285,7 +285,7 @@ console.log('Withdrawn:', signature);
 ```typescript
 import { MatchbookWebSocket } from '@matchbook/sdk';
 
-const ws = new MatchbookWebSocket('wss://ws.matchbook.io');
+const ws = new MatchbookWebSocket('wss://ws.matchbook.taunais.com');
 
 ws.on('open', () => {
   // Subscribe to order book
@@ -315,7 +315,7 @@ ws.connect();
 ```rust
 use matchbook_sdk::WebSocketClient;
 
-let mut ws = WebSocketClient::connect("wss://ws.matchbook.io").await?;
+let mut ws = WebSocketClient::connect("wss://ws.matchbook.taunais.com").await?;
 
 // Subscribe to order book
 ws.subscribe_book(&market_address, Some(20)).await?;

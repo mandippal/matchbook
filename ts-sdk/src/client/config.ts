@@ -25,8 +25,8 @@ export const DEFAULT_TIMEOUT = 30000;
  * @example
  * ```typescript
  * const config: ClientConfig = {
- *   baseUrl: 'https://api.matchbook.io/v1',
- *   wsUrl: 'wss://ws.matchbook.io/v1/stream',
+ *   baseUrl: 'https://api.matchbook.taunais.com/v1',
+ *   wsUrl: 'wss://ws.matchbook.taunais.com/v1/stream',
  *   timeout: 30000,
  *   apiKey: 'your-api-key',
  * };

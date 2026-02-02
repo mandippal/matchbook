@@ -201,7 +201,7 @@ A full post-mortem will be conducted.
 ### Incident Management
 - **PagerDuty**: Alert routing and escalation
 - **Slack**: `#incidents` channel
-- **Status Page**: https://status.matchbook.io
+- **Status Page**: https://status.matchbook.taunais.com
 
 ### Diagnostic Tools
 - **Grafana**: http://grafana:3000

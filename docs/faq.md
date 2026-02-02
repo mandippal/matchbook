@@ -140,7 +140,7 @@ Sequence numbers ensure you process order book updates in order. If you receive 
 
 ### How do I get an API key?
 
-API keys are optional but provide higher rate limits. Contact us at api@matchbook.io for access.
+API keys are optional but provide higher rate limits. Contact us at api@matchbook.taunais.com for access.
 
 ### What are the rate limits?
 

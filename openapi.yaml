@@ -15,15 +15,15 @@ info:
   version: 1.0.0
   contact:
     name: Matchbook Support
-    email: support@matchbook.io
+    email: support@matchbook.taunais.com
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api.matchbook.io/v1
+  - url: https://api.matchbook.taunais.com/v1
     description: Production
-  - url: https://api.devnet.matchbook.io/v1
+  - url: https://api.devnet.matchbook.taunais.com/v1
     description: Devnet
 
 tags:

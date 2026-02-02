@@ -6,8 +6,8 @@ This document provides complete documentation for the Matchbook REST API.
 
 | Environment | URL |
 |-------------|-----|
-| Production | `https://api.matchbook.io/v1` |
-| Devnet | `https://api.devnet.matchbook.io/v1` |
+| Production | `https://api.matchbook.taunais.com/v1` |
+| Devnet | `https://api.devnet.matchbook.taunais.com/v1` |
 
 ## Authentication
 
@@ -17,7 +17,7 @@ For higher rate limits, include your API key:
 
 ```http
 GET /v1/markets HTTP/1.1
-Host: api.matchbook.io
+Host: api.matchbook.taunais.com
 X-API-Key: your-api-key
 ```
 
@@ -27,7 +27,7 @@ For transaction building endpoints, sign requests with your wallet:
 
 ```http
 POST /v1/tx/place-order HTTP/1.1
-Host: api.matchbook.io
+Host: api.matchbook.taunais.com
 Content-Type: application/json
 X-Wallet: <base58-pubkey>
 X-Timestamp: 1706640000

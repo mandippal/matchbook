@@ -2,8 +2,8 @@
 global:
   # Default SMTP settings (override in receivers)
   smtp_smarthost: 'smtp.example.com:587'
-  smtp_from: 'alertmanager@matchbook.io'
-  smtp_auth_username: 'alertmanager@matchbook.io'
+  smtp_from: 'alertmanager@matchbook.taunais.com'
+  smtp_auth_username: 'alertmanager@matchbook.taunais.com'
   smtp_auth_password: ''
   smtp_require_tls: true
 
@@ -144,7 +144,7 @@ receivers:
   # Email for critical alerts (backup)
   - name: 'email-critical'
     email_configs:
-      - to: 'oncall@matchbook.io'
+      - to: 'oncall@matchbook.taunais.com'
         send_resolved: true
         headers:
           Subject: '[{{ .Status | toUpper }}] {{ .CommonLabels.alertname }}'

@@ -11,7 +11,7 @@ data:
     global:
       resolve_timeout: 5m
       smtp_smarthost: 'smtp.example.com:587'
-      smtp_from: 'alertmanager@matchbook.io'
+      smtp_from: 'alertmanager@matchbook.taunais.com'
       smtp_require_tls: true
       pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
 
