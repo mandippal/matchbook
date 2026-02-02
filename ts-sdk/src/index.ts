@@ -125,3 +125,29 @@ export {
   assertOrderBook,
   assertBalance,
 } from './guards';
+
+// Client
+export type { ClientConfig, ResolvedConfig } from './client';
+export {
+  DEFAULT_BASE_URL,
+  DEFAULT_WS_URL,
+  DEFAULT_TIMEOUT,
+  resolveConfig,
+  validateConfig,
+  ClientError,
+  HttpError,
+  ApiError as ClientApiError,
+  TimeoutError,
+  RateLimitError,
+  WebSocketError,
+  NotFoundError,
+  UnauthorizedError,
+  isClientError,
+  isHttpError,
+  isApiError,
+  isRateLimitError,
+  MatchbookClient,
+  MatchbookWsClient,
+} from './client';
+
+export type { BookCallback, TradeCallback, OrderCallback, ErrorCallback } from './client';
