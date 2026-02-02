@@ -94,7 +94,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("Found {} balance entries:", balances.len());
             for balance in balances.iter() {
                 println!("  Market: {}", balance.market);
-                println!("    Base: {} available, {} locked", balance.base_free, balance.base_locked);
+                println!(
+                    "    Base: {} available, {} locked",
+                    balance.base_free, balance.base_locked
+                );
                 println!(
                     "    Quote: {} available, {} locked",
                     balance.quote_free, balance.quote_locked

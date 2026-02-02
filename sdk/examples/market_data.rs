@@ -22,8 +22,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Load configuration from environment variables
     let api_url = env::var("MATCHBOOK_API_URL")
         .unwrap_or_else(|_| "https://api.matchbook.example/v1".to_string());
-    let market_address = env::var("MATCHBOOK_MARKET")
-        .expect("MATCHBOOK_MARKET environment variable is required");
+    let market_address =
+        env::var("MATCHBOOK_MARKET").expect("MATCHBOOK_MARKET environment variable is required");
 
     println!("=== Matchbook Market Data Example ===\n");
     println!("API URL: {api_url}");
